@@ -38,7 +38,7 @@ Start by cloning this repository:
 
 ```zsh
 # Clone this project onto your machine
-$ slack create my-app -t hirefrank/reaction-faqs
+$ slack create my-app -t hirefrank/slack-reaction-faqs
 
 # Change into the project directory
 $ cd my-app
