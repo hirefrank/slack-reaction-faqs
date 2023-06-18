@@ -1,6 +1,5 @@
 import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
-import { parse } from "https://deno.land/std@0.192.0/csv/parse.ts";
-import { content } from "./content.ts";
+import FAQsDatastore from "../datastores/faqs.ts";
 
 /**
  * Custom function for looking up faq by reaction
@@ -34,26 +33,29 @@ export const ReactionLookupFunction = DefineFunction({
 export default SlackFunction(
   ReactionLookupFunction,
   async ({ inputs, client }) => {
-    const faqs = parse(content, {
-      skipFirstRow: true,
-      columns: ["reaction", "text", "link"],
+    console.log(`searching for ${inputs.reaction}`);
+    const getResponse = await client.apps.datastore.query<
+      typeof FAQsDatastore.definition
+    >({
+      datastore: "faqs",
+      expression: "#reaction = :reaction",
+      expression_attributes: { "#reaction": "reaction" },
+      expression_values: { ":reaction": (inputs.reaction).trim() },
     });
 
-    const map = new Map<string, string>();
-    faqs.forEach((item) => {
-      map.set(item.reaction, JSON.stringify(item));
-    });
+    if (!getResponse.ok) {
+      const error = `Failed to query datastore: ${getResponse.error}`;
+      return { error };
+    }
 
-    const lookup = map.get(inputs.reaction);
-    if (lookup) {
-      const q = JSON.parse(lookup);
-
-      // threads response under parent message
+    if (getResponse.items.length == 1) {
       const msgResponse = await client.chat.postMessage({
         channel: inputs.channel,
         thread_ts: inputs.message_ts,
         mrkdwn: true,
-        text: `${q.text} \n ${q.link}`,
+        text: `${getResponse.items[0].text} \n\n:arrow_right: <${
+          getResponse.items[0].link
+        }|More info>`,
       });
 
       if (!msgResponse.ok) {
@@ -62,6 +64,8 @@ export default SlackFunction(
           msgResponse.error,
         );
       }
+    } else {
+      console.log("No reaction match");
     }
 
     return { outputs: {} };

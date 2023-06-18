@@ -2,7 +2,7 @@ import { DefineWorkflow, Schema } from "deno-slack-sdk/mod.ts";
 import { ReactionLookupFunction } from "../functions/lookup.ts";
 
 /**
- * Workflow for lookuping up FAQ answer based on reaction.
+ * Workflow for looking up FAQ answer based on reaction.
  */
 
 const Reaction2FAQWorkflow = DefineWorkflow({
@@ -25,7 +25,7 @@ const Reaction2FAQWorkflow = DefineWorkflow({
   },
 });
 
-// custom function, save user/channel to datastore
+// custom function looks up rection to get faq
 Reaction2FAQWorkflow.addStep(
   ReactionLookupFunction,
   {

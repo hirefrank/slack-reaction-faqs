@@ -110,8 +110,7 @@ Add one of your reactions to a post and watch the magic happen!
 
 ## Future Considerations
 
-- Add filtering to the event trigger to make it more efficient (only execute if a reaction exists in the dataset)
-- Ability to update the dataset without a redeploy
+- Add filtering to the event trigger to make it more efficient (only execute if a match)
 
 ## Deploying Your App
 
@@ -138,6 +137,8 @@ $ slack activity --tail
 
 ## Capabilities Demonstrated
 - Event triggers (reaction added)
+= Parsing incoming webhook and saving to datastore
+= Datastores
 - Posting Messages
 - Custom Functions
 

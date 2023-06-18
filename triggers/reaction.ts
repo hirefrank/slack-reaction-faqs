@@ -8,8 +8,7 @@ import {
 import Reaction2FAQWorkflow from "../workflows/faq.ts";
 
 /**
- * Intial trigger for the setup workflow. Must be created manually
- * when deployed.
+ * Event trigger for adding a reaction
  */
 
 const trigger: Trigger<typeof Reaction2FAQWorkflow.definition> = {
