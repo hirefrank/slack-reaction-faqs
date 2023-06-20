@@ -10,8 +10,8 @@ Simple workflow that replies to a post in thread based on the reaction. My useca
 - [Running Your Project Locally](#running-your-project-locally)
 - [Creating Triggers](#creating-triggers)
 - [Workflow Usage](#workflow-usage)
+- [Datastores](#datastores)
 - [Deploying Your App](#deploying-your-app)
-- [Future Considerations](#future-considerations)
 - [Viewing Activity Logs](#viewing-activity-logs)
 - [Capabilities Demonstrated](#capabilities-demonstrated)
 - [Project Structure](#project-structure)
@@ -96,10 +96,10 @@ or deployed!**
 
 ### Manual Trigger Creation
 
-You need to create two triggers for this automation. To manually create the first trigger, use the following command:
+To manually create the trigger, use the following command:
 
 ```zsh
-$ slack trigger create --trigger-def triggers/reaction.ts
+$ slack trigger create --trigger-def triggers/webhook.ts
 ```
 
 :bulb: You need to add your app to the channel(s) you want to use.
@@ -108,9 +108,12 @@ $ slack trigger create --trigger-def triggers/reaction.ts
 
 Add one of your reactions to a post and watch the magic happen!
 
-## Future Considerations
+## Datastores
 
-- Add filtering to the event trigger to make it more efficient (only execute if a match)
+For storing data related to your app, datastores offer secure storage on Slack
+infrastructure. For an example of a datastore, see `datastores/users.ts` -- it logs requestors and their private channel.
+The use of a datastore requires the `datastore:write`/`datastore:read` scopes to
+be present in your manifest.
 
 ## Deploying Your App
 
@@ -137,8 +140,8 @@ $ slack activity --tail
 
 ## Capabilities Demonstrated
 - Event triggers (reaction added)
-= Parsing incoming webhook and saving to datastore
-= Datastores
+- Parsing incoming webhook and saving to datastore
+- Datastores
 - Posting Messages
 - Custom Functions
 
@@ -149,6 +152,13 @@ $ slack activity --tail
 
 Contains `apps.dev.json` and `apps.json`, which include installation details for
 development and deployed apps.
+
+### `datastores/`
+
+[Datastores](https://api.slack.com/automation/datastores) securely store data
+for your application on Slack infrastructure. Required scopes to use datastores
+include `datastore:write` and `datastore:read`.
+
 
 ### `functions/`
 

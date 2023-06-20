@@ -1,5 +1,12 @@
 {
   "apps": {
+    "devrelsandbox": {
+      "name": "devrelsandbox",
+      "app_id": "A05DCRZ79DY",
+      "team_id": "T038J6TH5PF",
+      "IsDev": false,
+      "InstallStatus": 0
+    },
     "slack-pde": {
       "name": "slack-pde",
       "app_id": "A05CLGQ3WPR",
