@@ -22,6 +22,8 @@ export default Manifest({
     "chat:write",
     "chat:write.public",
     "reactions:read",
+    "triggers:read",
+    "triggers:write",
     "datastore:read",
     "datastore:write",
   ],

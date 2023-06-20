@@ -36,27 +36,43 @@ export const SaveFAQDefinition = DefineFunction({
 export default SlackFunction(
   SaveFAQDefinition,
   async ({ inputs, client }) => {
-    console.log(inputs.id);
-    console.log(inputs.reaction);
-    console.log(inputs.text);
-    console.log(inputs.link);
+    const clean = {
+      "reaction": inputs.reaction.trim(),
+      "text": inputs.text.trim(),
+      "link": inputs.link.trim(),
+    };
 
-    const create_or_update = await client.apps.datastore.put<
-      typeof FAQsDatastore.definition
-    >({
-      datastore: "faqs",
-      item: {
+    console.log(clean);
+    if (clean.reaction == "" && clean.text == "" && clean.link == "") {
+      const response = await client.apps.datastore.delete<
+        typeof FAQsDatastore.definition
+      >({
+        datastore: "faqs",
         id: inputs.id,
-        reaction: inputs.reaction.trim(),
-        text: inputs.text.trim(),
-        link: inputs.link.trim(),
-      },
-    });
+      });
 
-    if (!create_or_update.ok) {
-      const error =
-        `Failed to add row to datastore: ${create_or_update.errors.message}`;
-      return { error };
+      if (!response.ok) {
+        const error = `Failed to delete a row in datastore: ${response.error}`;
+        return { error };
+      }
+    } else {
+      const create_or_update = await client.apps.datastore.put<
+        typeof FAQsDatastore.definition
+      >({
+        datastore: "faqs",
+        item: {
+          id: inputs.id,
+          reaction: clean.reaction,
+          text: clean.text,
+          link: clean.link,
+        },
+      });
+
+      if (!create_or_update.ok) {
+        const error =
+          `Failed to add row to datastore: ${create_or_update.errors.message}`;
+        return { error };
+      }
     }
 
     return { outputs: {} };

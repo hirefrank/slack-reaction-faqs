@@ -1,5 +1,6 @@
 import { DefineWorkflow, Schema } from "deno-slack-sdk/mod.ts";
 import { SaveFAQDefinition } from "../functions/save_faq.ts";
+import { UpdateEventTriggerDefinition } from "../functions/reaction_trigger.ts";
 
 /**
  * Workflow for processing gsheet changes to datastore.
@@ -37,6 +38,11 @@ OnChangeWorkflow.addStep(
     text: OnChangeWorkflow.inputs.text,
     link: OnChangeWorkflow.inputs.link,
   },
+);
+
+OnChangeWorkflow.addStep(
+  UpdateEventTriggerDefinition,
+  {},
 );
 
 export default OnChangeWorkflow;
