@@ -1,5 +1,10 @@
 import { SlackAPIClient } from "deno-slack-sdk/types.ts";
 import { TriggerEventTypes, TriggerTypes } from "deno-slack-api/mod.ts";
+
+export type TriggerFilter = {
+  statement: string;
+};
+
 export async function findTriggerToUpdate(
   client: SlackAPIClient,
   workflowCallbackId: string,
@@ -34,8 +39,7 @@ export async function createOrUpdateTrigger(
   client: SlackAPIClient,
   workflowCallbackId: string,
   channelIds: string[],
-  // deno-lint-ignore no-explicit-any
-  reactions_filter: any[],
+  reactions_filter: [TriggerFilter, ...TriggerFilter[]],
   triggerToUpdate?: Record<string, string>,
 ) {
   // deno-lint-ignore no-explicit-any
