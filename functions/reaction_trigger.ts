@@ -2,6 +2,7 @@ import { DefineFunction, SlackFunction } from "deno-slack-sdk/mod.ts";
 import {
   createOrUpdateTrigger,
   findTriggerToUpdate,
+  TriggerFilter,
 } from "./internals/trigger_operations.ts";
 import FAQsDatastore from "../datastores/faqs.ts";
 
@@ -38,8 +39,7 @@ export default SlackFunction(
       return { error };
     }
 
-    // deno-lint-ignore no-explicit-any
-    const reactions_filter: any[] = [];
+    const reactions_filter: TriggerFilter[] = [];
     result.items.forEach((item) => {
       reactions_filter.push(
         { statement: `{{data.reaction}} == ${item.reaction}` },
@@ -60,7 +60,7 @@ export default SlackFunction(
       client,
       workflow_callback_id,
       ["C05CY240HKP"],
-      reactions_filter,
+      reactions_filter as [TriggerFilter, ...TriggerFilter[]], // we tell TS that this array includes _at least_ one defined TriggerFilter using `as`
       triggerToUpdate,
     );
 
