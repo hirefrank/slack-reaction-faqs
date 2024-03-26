@@ -17,7 +17,6 @@ export async function findTriggerToUpdate(
   // find the trigger to update
   if (allTriggers.triggers) {
     for (const trigger of allTriggers.triggers) {
-      console.log(`trigger: ${trigger}`);
       if (
         trigger.workflow.callback_id === workflowCallbackId &&
         trigger.event_type === "slack#/events/reaction_added"
@@ -69,7 +68,7 @@ export async function createOrUpdateTrigger(
         `Failed to create a trigger! (response: ${JSON.stringify(creation)})`,
       );
     }
-    // console.log(`A new trigger created: ${JSON.stringify(creation)}`);
+    console.log(`A new trigger created: ${JSON.stringify(creation)}`);
   } else {
     // Update the existing trigger
     const update = await client.workflows.triggers.update({

@@ -52,14 +52,12 @@ export default SlackFunction(
       workflow_callback_id,
     );
 
-    console.log(triggerToUpdate);
-
     // If the trigger already exists, we update it.
     // Otherwise, we create a new one.
     await createOrUpdateTrigger(
       client,
       workflow_callback_id,
-      ["C05CY240HKP"],
+      ["C02HUU0SKDH"],
       reactions_filter as [TriggerFilter, ...TriggerFilter[]], // we tell TS that this array includes _at least_ one defined TriggerFilter using `as`
       triggerToUpdate,
     );
